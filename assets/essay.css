@@ -181,7 +181,7 @@ sup.note a:hover, sup.note a:focus-visible { color: var(--accent); }
 
 /* Footer */
 footer.site {
-  display: flex; justify-content: space-between; gap: 1rem;
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1.5rem;
   margin-top: 4rem; padding-block: 1.75rem 3.5rem;
   font-size: 0.68rem;
   color: var(--text-faint);

@@ -126,5 +126,34 @@
   update();
 })();
 </script>
+<script>
+/* Counts page views. No cookies. Opening any page here with ?owner=1 stops this browser being counted; ?owner=0 undoes it. */
+(function () {
+  var KEY = 'essays-owner', mine = false;
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.has('owner')) {
+      if (q.get('owner') === '0') localStorage.removeItem(KEY); else localStorage.setItem(KEY, '1');
+    }
+    mine = !!localStorage.getItem(KEY);
+  } catch (e) {}
+  if (mine) {
+    var f = document.querySelector('footer.site');
+    if (f) { var s = document.createElement('span'); s.textContent = 'Your visits from this browser are not counted'; f.appendChild(s); }
+    return;
+  }
+  if (location.hostname !== 'dpowert2.github.io') return;
+  function send() {
+    fetch('https://iyoseurwycryykrnlbig.supabase.co/functions/v1/essay-visits', {
+      method: 'POST', keepalive: true, headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ p: location.pathname, r: document.referrer })
+    }).catch(function () {});
+  }
+  if (document.visibilityState === 'visible') send();
+  else document.addEventListener('visibilitychange', function once() {
+    if (document.visibilityState === 'visible') { document.removeEventListener('visibilitychange', once); send(); }
+  });
+})();
+</script>
 </body>
 </html>
